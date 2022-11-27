@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -29,12 +30,27 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class Account {
+  final int id;
+  final String username;
+  final String firstname;
+  final String lastname;
+  final String email;
+  Account(this.id, this.username, this.firstname, this.lastname, this.email);
+}
 
-  void _incrementCounter() {
+class Event {
+  final String name;
+  final Account account;
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String event_name = "";
+  void add_card() async {
+    final url = Uri.parse("http://127.0.0.1:8000/events/");
+    final response = await http.get(url);
     setState(() {
-      _counter++;
+      event_name = response.body;
     });
   }
 
@@ -47,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Card(
             child: ListTile(
               title: Text("Hello"),
-              subtitle: Text("World"),
             ),
           ),
         ],
